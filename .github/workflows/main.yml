@@ -11,8 +11,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: run build image
         run: |
-          ls -alh
           bash build.sh
           yum -y install skopeo
-          echo ${DOCKERP} | skopeo login docker.io -u {DOCKERU} --password-stdin
+          skopeo login docker.io -u {DOCKERU} -p ${DOCKERP}
           skopeo copy tarball:image.tar docker://jeffrey4l/centos:stream8
