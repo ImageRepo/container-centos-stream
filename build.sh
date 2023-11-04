@@ -6,6 +6,9 @@ set -o errexit
 YUM=dnf
 
 rootfs=$(pwd)/rootfs
+if [[ -f $rootfs ]]; then
+  rm -rf $rootfs
+fi
 
 arch=${ARCH:-$(uname -m)}
 key_rpm=centos-gpg-keys-8-6.el8.noarch.rpm
