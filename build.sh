@@ -3,6 +3,7 @@
 set -o errexit
 
 . function.sh
+YUM=dnf
 
 rootfs=$(pwd)/rootfs
 
@@ -28,7 +29,7 @@ rpm --nodeps --root $rootfs -ivh $key_rpm
 
 rpm --root $rootfs --import  $rootfs/etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 
-yum -y --releasever 8 --installroot=$rootfs --setopt=tsflags='nodocs' \
+$YUM -y --releasever 8 --installroot=$rootfs --setopt=tsflags='nodocs' \
     --setopt=install_weak_deps=False \
     install dnf glibc-minimal-langpack langpacks-en glibc-langpack-en
 echo "tsflags=nodocs" >> $rootfs/etc/dnf/dnf.conf
@@ -43,4 +44,4 @@ EOF
 
 rm -f $rootfs/etc/resolv.conf
 
-tar -C $rootfs -c . | docker import - opstool/centos:stream8
+tar -C $rootfs -c . > image.tar

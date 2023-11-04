@@ -6,6 +6,7 @@ on:
 jobs:
   build_docker_image:
     runs-on: ubuntu-latest
+    container: quay.io/centos/centos:stream8
     steps:
       - uses: actions/checkout@v4
       - name: run build image

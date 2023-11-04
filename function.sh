@@ -1,6 +1,11 @@
 #!/bin/sh
 
 install_wget(){
-  apt update
-  apt -y install wget dnf rpm yum
+  if [[ -e /etc/debian_version ]]; then
+    apt update
+    apt -y install wget dnf rpm
+  fi
+  if [[ -e /etc/yum.repos.d ]]; then
+    yum -y install wget
+  fi
 }
