@@ -16,3 +16,6 @@ jobs:
           yum -y install skopeo
           skopeo login docker.io -u {DOCKERU} -p ${DOCKERP}
           skopeo copy tarball:image.tar docker://jeffrey4l/centos:stream8
+        env:
+          DOCKERU: ${{ secrets.DOCKERU }}
+          DOCKERP: ${{ secrets.DOCKERP }}
