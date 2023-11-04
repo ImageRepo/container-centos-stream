@@ -1,5 +1,9 @@
 #!/bin/bash -xe
 
+set -o errexit
+
+. function.sh
+
 rootfs=$(pwd)/rootfs
 
 arch=$(uname -m)
@@ -11,7 +15,7 @@ MIRROR_URL=https://mirrors.aliyun.com/centos/8-stream
 
 base_url=${MIRROR_URL}/BaseOS/x86_64/os/Packages/
 
-yum install -y wget
+install_wget
 
 wget $base_url/$repo_rpm
 wget $base_url/$key_rpm
