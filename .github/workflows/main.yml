@@ -13,3 +13,6 @@ jobs:
         run: |
           ls -alh
           bash build.sh
+          yum -y install skopeo
+          echo ${DOCKERP} | skopeo login docker.io -u {DOCKERU} --password-stdin
+          skopeo copy tarball:image.tar docker://jeffrey4l/centos:stream8
