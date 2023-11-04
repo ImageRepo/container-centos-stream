@@ -11,4 +11,5 @@ jobs:
       - uses: actions/checkout@v4
       - name: run build image
         run: |
-          sudo -E bash build.sh
+          ls -alh
+          bash build.sh
