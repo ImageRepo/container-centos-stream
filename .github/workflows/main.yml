@@ -14,7 +14,7 @@ jobs:
       - name: install require package
         run: |
           sudo apt update
-          sudo apt install -y qemu-user-binfmt buildah qemu-user-static wget dnf rpm
+          sudo apt install -y buildah qemu-user-static wget dnf rpm
       - name: run build image
         run: |
           ARCH=x86_64 sudo -E ./build.sh
