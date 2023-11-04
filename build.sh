@@ -6,7 +6,7 @@ set -o errexit
 YUM=dnf
 
 rootfs=$(pwd)/rootfs
-if [[ -f $rootfs ]]; then
+if [[ -e $rootfs ]]; then
   rm -rf $rootfs
 fi
 
