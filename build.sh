@@ -6,7 +6,10 @@ arch=$(uname -m)
 key_rpm=centos-gpg-keys-8-6.el8.noarch.rpm
 repo_rpm=centos-stream-repos-8-6.el8.noarch.rpm
 
-base_url=https://mirrors.tuna.tsinghua.edu.cn/centos/8-stream/BaseOS/x86_64/os/Packages/
+# https://mirrors.tuna.tsinghua.edu.cn/centos/8-stream
+MIRROR_URL=https://mirrors.aliyun.com/centos/8-stream
+
+base_url=${MIRROR_URL}/BaseOS/x86_64/os/Packages/
 
 yum install -y wget
 
