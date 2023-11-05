@@ -21,9 +21,26 @@ jobs:
       - name: build aarch64 image
         run: |
           ARCH=aarch64 sudo -E ./build.sh
-      - name: ls files
+      - name: buildah manifest
         run: |
-          ls -alh
+          c=$(buildah from scratch)
+          buildah add $c image-x86.tar
+          buildah config --arch amd64 $c
+          buildah commit $c x86
+
+          c2=$(buildah from scratch)
+          buildah add $c2 image-aarch64.tar
+          buildah config --arch aarch64 $c2
+          buildah commit $c2 aarch64
+
+          m=$(buildah manifest create opstool/centos:stream8)
+          buildah manifest add $m x86
+          buildah manifest add $m aarch64
+          buildah manifest inspect $m
+
+          buildah login docker.io -u $DOCKERU -p $DOCKERP
+          buildah manifest push --all $m opstool/centos:stream8
+
         env:
           DOCKERU: ${{ secrets.DOCKERU }}
           DOCKERP: ${{ secrets.DOCKERP }}

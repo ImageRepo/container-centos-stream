@@ -40,7 +40,7 @@ echo "tsflags=nodocs" >> $rootfs/etc/dnf/dnf.conf
 cp /etc/resolv.conf $rootfs/etc/resolv.conf
 
 chroot $rootfs /bin/bash <<EOF
-dnf -y install --releasever 8 yum
+# dnf -y install --releasever 8 yum
 dnf clean all
 EOF
 
