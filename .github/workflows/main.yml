@@ -47,8 +47,8 @@ jobs:
           buildah manifest add $m aarch64
           buildah manifest inspect $m
 
-          buildah login -u $DOCKERU -p $DOCKERP docker.io
           echo buildah login -u $DOCKERU -p $DOCKERP docker.io
+          buildah login -u $DOCKERU -p $DOCKERP docker.io
           buildah manifest push --all $m opstool/centos:stream8
 
         env:
