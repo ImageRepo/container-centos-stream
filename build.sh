@@ -33,8 +33,7 @@ wget $base_url/$release_rpm
 mkdir -p $rootfs
 
 rpm --root $rootfs --initdb
-rpm --nodeps --root $rootfs -ivh $repo_rpm
-rpm --nodeps --root $rootfs -ivh $key_rpm
+rpm --nodeps --root $rootfs -ivh $release_rpm
 
 rpm --root $rootfs --import  $rootfs/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 
