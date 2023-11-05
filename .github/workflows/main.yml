@@ -15,19 +15,14 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y buildah qemu-user-static wget dnf rpm
-      # - name: build x86_64 image
-      #   run: |
-      #     ARCH=x86_64 sudo -E ./build.sh
-      #     ls -alh
-      # - name: build aarch64 image
-      #   run: |
-      #     ARCH=aarch64 sudo -E ./build.sh
-      #     ls -alh
-      - name: mock file
+      - name: build x86_64 image
         run: |
-          touch image-x86_64.tar
-          touch image-aarch64.tar
-
+          ARCH=x86_64 sudo -E ./build.sh
+          ls -alh
+      - name: build aarch64 image
+        run: |
+          ARCH=aarch64 sudo -E ./build.sh
+          ls -alh
       - name: buildah manifest
         run: |
           set -o xtrace
@@ -51,7 +46,6 @@ jobs:
           buildah login -u $DOCKERU -p $DOCKERP docker.io
           buildah images
           buildah manifest push --all $m docker://opstool/centos:stream8
-
         env:
           DOCKERU: ${{ secrets.DOCKERU }}
           DOCKERP: ${{ secrets.DOCKERP }}
