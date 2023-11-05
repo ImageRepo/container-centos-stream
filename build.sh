@@ -4,11 +4,18 @@ set -o errexit
 
 . function.sh
 
-YUM=dnf
-RELEASEVER=${RELEASEVER:-9}
+YUM=yum
+RELEASEVER=${RELEASEVER:-7}
 # MIRROR_URL=https://mirrors.tuna.tsinghua.edu.cn/centos/8-stream
-MIRROR_URL=https://mirrors.aliyun.com/centos-stream/9-stream
 arch=${ARCH:-$(uname -m)}
+if [[ $arch == 'x86_64' ]]; then
+  MIRROR_URL=https://mirrors.aliyun.com/centos/$RELEASEVER
+elif [[ $arch == 'aarch64' ]]; then
+  MIRROR_URL=https://mirrors.aliyun.com/centos-altarch/$RELEASEVER
+else
+  echo unknow $arch
+  exit 1
+fi
 
 install_wget
 
@@ -17,13 +24,11 @@ if [[ -e $rootfs ]]; then
   rm -rf $rootfs
 fi
 
-key_rpm=centos-gpg-keys-9.0-23.el9.noarch.rpm
-repo_rpm=centos-stream-repos-9.0-23.el9.noarch.rpm
+release_rpm=centos-release-7-9.2009.0.el7.centos.x86_64.rpm
 
-base_url=${MIRROR_URL}/BaseOS/${arch}/os/Packages/
+base_url=${MIRROR_URL}/os/${arch}/Packages/
 
-wget $base_url/$repo_rpm
-wget $base_url/$key_rpm
+wget $base_url/$release_rpm
 
 mkdir -p $rootfs
 
@@ -31,21 +36,11 @@ rpm --root $rootfs --initdb
 rpm --nodeps --root $rootfs -ivh $repo_rpm
 rpm --nodeps --root $rootfs -ivh $key_rpm
 
-rpm --root $rootfs --import  $rootfs/etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+rpm --root $rootfs --import  $rootfs/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 
 $YUM --forcearch $arch -y --releasever $RELEASEVER --installroot=$rootfs --setopt=tsflags='nodocs' \
     --setopt=install_weak_deps=False \
-    install dnf glibc-minimal-langpack langpacks-en glibc-langpack-en
+    install yum glibc
 echo "tsflags=nodocs" >> $rootfs/etc/dnf/dnf.conf
-
-cp /etc/resolv.conf $rootfs/etc/resolv.conf
-
-chroot $rootfs /bin/bash <<EOF
-dnf -y install --releasever $RELEASEVER yum
-dnf clean all
-EOF
-
-
-rm -f $rootfs/etc/resolv.conf
 
 tar -C $rootfs -c . > image-$arch.tar

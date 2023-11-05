@@ -49,5 +49,5 @@ jobs:
         env:
           DOCKERU: ${{ secrets.DOCKERU }}
           DOCKERP: ${{ secrets.DOCKERP }}
-          IMAGE_TAG: stream9
+          IMAGE_TAG: 7
           IMAGE_NAME: opstool/centos
