@@ -32,19 +32,17 @@ rpm --nodeps --root $rootfs -ivh $repo_rpm
 rpm --nodeps --root $rootfs -ivh $key_rpm
 
 rpm --root $rootfs --import  $rootfs/etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+YUM_CMD="$YUM --forcearch $arch -y --releasever $RELEASEVER --setopt=tsflags='nodocs' --setopt=install_weak_deps=False"
 
-$YUM --forcearch $arch -y --releasever $RELEASEVER --installroot=$rootfs --setopt=tsflags='nodocs' \
-    --setopt=install_weak_deps=False \
-    install dnf glibc-minimal-langpack langpacks-en glibc-langpack-en
+$YUM_CMD --installroot=$rootfs install dnf glibc-minimal-langpack langpacks-en glibc-langpack-en
 echo "tsflags=nodocs" >> $rootfs/etc/dnf/dnf.conf
 
 cp /etc/resolv.conf $rootfs/etc/resolv.conf
 
 chroot $rootfs /bin/bash <<EOF
-dnf -y install --releasever $RELEASEVER yum
+$YUM_CMD install yum glibc-minimal-langpack langpacks-en glibc-langpack-en
 dnf clean all
 EOF
-
 
 rm -f $rootfs/etc/resolv.conf
 
