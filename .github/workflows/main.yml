@@ -49,7 +49,8 @@ jobs:
 
           echo buildah login -u $DOCKERU -p $DOCKERP docker.io
           buildah login -u $DOCKERU -p $DOCKERP docker.io
-          buildah manifest push --all $m opstool/centos:stream8
+          buildah images
+          buildah manifest push --all $m docker://opstool/centos:stream8
 
         env:
           DOCKERU: ${{ secrets.DOCKERU }}
