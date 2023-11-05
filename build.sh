@@ -3,7 +3,9 @@
 set -o errexit
 
 . function.sh
+
 YUM=dnf
+RELEASEVER=${RELEASEVER:-8}
 
 rootfs=$(pwd)/rootfs
 if [[ -e $rootfs ]]; then
@@ -32,7 +34,7 @@ rpm --nodeps --root $rootfs -ivh $key_rpm
 
 rpm --root $rootfs --import  $rootfs/etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 
-$YUM --forcearch $arch -y --releasever 8 --installroot=$rootfs --setopt=tsflags='nodocs' \
+$YUM --forcearch $arch -y --releasever $RELEASEVER --installroot=$rootfs --setopt=tsflags='nodocs' \
     --setopt=install_weak_deps=False \
     install dnf glibc-minimal-langpack langpacks-en glibc-langpack-en
 echo "tsflags=nodocs" >> $rootfs/etc/dnf/dnf.conf
@@ -40,7 +42,7 @@ echo "tsflags=nodocs" >> $rootfs/etc/dnf/dnf.conf
 cp /etc/resolv.conf $rootfs/etc/resolv.conf
 
 chroot $rootfs /bin/bash <<EOF
-# dnf -y install --releasever 8 yum
+dnf -y install --releasever $RELEASEVER yum
 dnf clean all
 EOF
 
