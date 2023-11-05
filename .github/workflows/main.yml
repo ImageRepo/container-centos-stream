@@ -18,11 +18,14 @@ jobs:
       - name: build x86_64 image
         run: |
           ARCH=x86_64 sudo -E ./build.sh
+          ls -alh
       - name: build aarch64 image
         run: |
           ARCH=aarch64 sudo -E ./build.sh
+          ls -alh
       - name: buildah manifest
         run: |
+          ls -alh
           c=$(buildah from scratch)
           buildah add $c image-x86.tar
           buildah config --arch amd64 $c
