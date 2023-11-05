@@ -37,7 +37,7 @@ jobs:
           buildah config --arch aarch64 $c2
           buildah commit $c2 aarch64
 
-          m=$(buildah manifest create opstool/centos:stream8)
+          m=$(buildah manifest create $IMAGE_NAME:$IMAGE_TAG)
           buildah manifest add $m amd64
           buildah manifest add $m aarch64
           buildah manifest inspect $m
@@ -45,7 +45,9 @@ jobs:
           echo buildah login -u $DOCKERU -p $DOCKERP docker.io
           buildah login -u $DOCKERU -p $DOCKERP docker.io
           buildah images
-          buildah manifest push --all $m docker://opstool/centos:stream8
+          buildah manifest push --all $m docker://$IMAGE_NAME:$IMAGE_TAG
         env:
           DOCKERU: ${{ secrets.DOCKERU }}
           DOCKERP: ${{ secrets.DOCKERP }}
+          IMAGE_TAG: stream8
+          IMAGE_NAME: opstool/centos

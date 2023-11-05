@@ -6,6 +6,10 @@ set -o errexit
 
 YUM=dnf
 RELEASEVER=${RELEASEVER:-8}
+# MIRROR_URL=https://mirrors.tuna.tsinghua.edu.cn/centos/8-stream
+MIRROR_URL=https://mirrors.aliyun.com/centos/8-stream
+
+install_wget
 
 rootfs=$(pwd)/rootfs
 if [[ -e $rootfs ]]; then
@@ -16,12 +20,7 @@ arch=${ARCH:-$(uname -m)}
 key_rpm=centos-gpg-keys-8-6.el8.noarch.rpm
 repo_rpm=centos-stream-repos-8-6.el8.noarch.rpm
 
-# https://mirrors.tuna.tsinghua.edu.cn/centos/8-stream
-MIRROR_URL=https://mirrors.aliyun.com/centos/8-stream
-
 base_url=${MIRROR_URL}/BaseOS/${arch}/os/Packages/
-
-install_wget
 
 wget $base_url/$repo_rpm
 wget $base_url/$key_rpm
