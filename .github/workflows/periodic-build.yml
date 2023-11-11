@@ -1,0 +1,21 @@
+name: periodic image build
+
+on:
+  push:
+  schedule:
+    - cron: '0 0 * * *'
+jobs:
+  stream8:
+    name: build stream8
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: stream8
+  stream9:
+    name: build stream9
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: stream9
